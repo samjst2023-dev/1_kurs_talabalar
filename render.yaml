@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: talabalar-malumotlari
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: GROUPS
+        value: 101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,201,202,203,204,205,206,207,208,209,210,211,212,213
+      - key: DATA_DIR
+        value: /var/data
+      - key: DB_PATH
+        value: /var/data/students.sqlite3
+      - key: COOKIE_SECURE
+        value: "1"
+    disk:
+      name: talabalar-data
+      mountPath: /var/data
+      sizeGB: 1

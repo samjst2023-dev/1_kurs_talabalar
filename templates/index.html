@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Talaba ma’lumotlarini yuborish{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-xl-7">
+    {% if submitted %}
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5 text-center">
+          <div class="success-mark mb-3">✓</div>
+          <h1 class="h3">Ma’lumotlaringiz qabul qilindi!</h1>
+          <p class="text-secondary mb-0">Rahmat. Ma’lumotlar tizimga saqlandi. Sahifani qayta yuborishingiz shart emas.</p>
+        </div>
+      </div>
+    {% else %}
+      <div class="mb-4">
+        <span class="badge text-bg-primary mb-2">1-bosqich talabalari uchun</span>
+        <h1 class="h2 fw-bold">Talaba ma’lumotlarini kiritish</h1>
+        <p class="text-secondary">Barcha maydonlarni to‘ldiring va aniq, yuzingiz ko‘rinadigan rasm yuklang.</p>
+      </div>
+      {% if error_message %}<div class="alert alert-danger">{{ error_message }}</div>{% endif %}
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <form method="post" enctype="multipart/form-data">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="surname">Familiya *</label>
+                <input class="form-control" id="surname" name="surname" maxlength="80" required autocomplete="family-name">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="first_name">Ism *</label>
+                <input class="form-control" id="first_name" name="first_name" maxlength="80" required autocomplete="given-name">
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="patronymic">Sharif (otasining ismi) *</label>
+                <input class="form-control" id="patronymic" name="patronymic" maxlength="80" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="phone">Telefon raqami *</label>
+                <input class="form-control" id="phone" name="phone" type="tel" maxlength="30"
+                       placeholder="+998 90 123 45 67" required autocomplete="tel">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="group_name">Guruh *</label>
+                <select class="form-select" id="group_name" name="group_name" required>
+                  <option value="">Guruhni tanlang</option>
+                  {% for group in groups %}
+                    <option value="{{ group }}">{{ group }}-guruh</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="photo">Rasm *</label>
+                <input class="form-control" id="photo" name="photo" type="file"
+                       accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required>
+                <div class="form-text">JPG, PNG yoki WEBP. Maksimal hajm: 7 MB. Rasm serverda JPEG formatida saqlanadi.</div>
+              </div>
+              <div class="col-12 pt-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="confirm" required>
+                  <label class="form-check-label small" for="confirm">
+                    Kiritgan ma’lumotlarim to‘g‘ri ekanini tasdiqlayman.
+                  </label>
+                </div>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary btn-lg w-100" type="submit">Ma’lumotlarni yuborish</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <p class="small text-secondary mt-3">Ma’lumotlarni faqat rasmiy mas’ul shaxs bergan havola orqali yuboring.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

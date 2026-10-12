@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Admin paneli{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+  <div>
+    <h1 class="h2 fw-bold mb-1">Administrator paneli</h1>
+    <p class="text-secondary mb-0">Jami yuborilgan ma’lumotlar: <strong>{{ total }}</strong></p>
+  </div>
+  <form method="post" action="{{ url_for('admin_logout') }}">
+    <button class="btn btn-outline-secondary" type="submit">Tizimdan chiqish</button>
+  </form>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-4">
+    <a class="export-card" href="{{ url_for('export_excel') }}">
+      <span class="export-icon">XLSX</span>
+      <span><strong>Excel faylini yuklab olish</strong><small>Barcha talabalar ro‘yxati</small></span>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4">
+    <a class="export-card" href="{{ url_for('export_zip') }}">
+      <span class="export-icon zip">ZIP</span>
+      <span><strong>Excel + rasmlar ZIP</strong><small>Guruhlar bo‘yicha papkalar bilan</small></span>
+    </a>
+  </div>
+</div>
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5">Guruhlar kesimida</h2>
+    <div class="d-flex flex-wrap gap-2">
+      {% for item in group_counts %}
+        <span class="badge rounded-pill text-bg-light border">{{ item['group_name'] }}-guruh: {{ item['n'] }}</span>
+      {% else %}
+        <span class="text-secondary">Hozircha ma’lumot yo‘q.</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <form class="row g-2 mb-3" method="get">
+      <div class="col-md-6">
+        <input class="form-control" name="q" value="{{ search }}" placeholder="F.I.Sh. yoki telefon bo‘yicha qidirish">
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" name="group">
+          <option value="">Barcha guruhlar</option>
+          {% for group in groups %}
+            <option value="{{ group }}" {% if group_filter == group %}selected{% endif %}>{{ group }}-guruh</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3 d-flex gap-2">
+        <button class="btn btn-primary flex-grow-1" type="submit">Qidirish</button>
+        <a class="btn btn-outline-secondary" href="{{ url_for('admin') }}">Tozalash</a>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead><tr><th>№</th><th>Familiya, ism, sharif</th><th>Telefon</th><th>Guruh</th><th>Rasm</th><th>Kiritilgan vaqt</th></tr></thead>
+        <tbody>
+        {% for s in students %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ s['surname'] }} {{ s['first_name'] }} {{ s['patronymic'] }}</td>
+            <td>{{ s['phone'] }}</td>
+            <td>{{ s['group_name'] }}</td>
+            <td><span class="small text-secondary">{{ s['image_filename'].split('/')[-1] }}</span></td>
+            <td class="small text-secondary">{{ s['created_at'].replace('T', ' ') }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-center text-secondary py-4">Ma’lumot topilmadi.</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="small text-secondary mb-0">Rasmlar xavfsizlik uchun faqat ZIP eksportida beriladi; ommaviy sahifada ochilmaydi.</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Administrator kirishi{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <h1 class="h3 fw-bold mb-2">Administrator paneli</h1>
+        <p class="text-secondary">Davom etish uchun administrator parolini kiriting.</p>
+        {% if setup_warning %}
+          <div class="alert alert-warning">ADMIN_PASSWORD yoki ADMIN_PASSWORD_HASH muhit o‘zgaruvchisi hali sozlanmagan. Render sozlamalarida o‘rnating.</div>
+        {% endif %}
+        <form method="post">
+          <label for="password" class="form-label">Parol</label>
+          <input class="form-control form-control-lg mb-3" id="password" name="password" type="password" required autocomplete="current-password">
+          <button class="btn btn-primary btn-lg w-100" type="submit">Kirish</button>
+        </form>
+        <a class="small d-inline-block mt-3" href="{{ url_for('index') }}">← Talaba formasiga qaytish</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
